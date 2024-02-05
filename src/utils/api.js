@@ -5,5 +5,13 @@ const ncNews = axios.create({
 });
 
 export const fetchArticles = () => {
+  console.log("fetching articles")
   return ncNews.get(`/articles`);
 };
+export const fetchArticleById = (article_id) => {
+
+  return ncNews.get(`/articles/${article_id}`);
+};
+export const fetchCommentsByArticleId = (article_id) =>{
+  return ncNews.get(`/articles/${article_id}/comments`).then(({data:{comments}}) => comments)
+}

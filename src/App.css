@@ -3,9 +3,18 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: rgb(130, 240, 204);
 }
 .topic{
   text-align: left;
   margin-left: 2px;
   font-size:x-small;
+}
+.comments{
+  font-size: small;
+  
+}
+.article{
+  font-size: medium;
+  text-align:justify;
 }
