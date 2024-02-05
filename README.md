@@ -1,7 +1,6 @@
 ![wireframes](wireframes.png)
 ![component tree](components.png)
 
-
 "endpoints": {
 "GET /api": {},
 "GET /api/topics": {},
