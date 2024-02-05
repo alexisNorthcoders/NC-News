@@ -1,8 +1,25 @@
-# React + Vite
+![wireframes](wireframes.png)
+![component tree](components.png)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+"endpoints": {
+"GET /api": {},
+"GET /api/topics": {},
+"GET /api/articles": {},
+"queries": [
+"sort_by",
+"order",
+"limit",
+"p"
+],
+"GET /api/articles/:article_id": {},
+"GET /api/articles/:article_id/comments": {},
+"POST /api/articles/:article_id/comments": {},
+"POST /api/topics": {},
+"GET /api/users": {},
+"GET /api/users/:username": {},
+"PATCH /api/articles/:article_id": {},
+"PATCH /api/comments/:comment_id": {},
+"DELETE /api/comments/:comment_id": {},
+"DELETE /api/articles/:article_id": {}
+}
