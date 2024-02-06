@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useContext} from "react";
 import { fetchArticles } from "../utils/api";
 
 import Card from "react-bootstrap/Card";
@@ -7,28 +7,30 @@ import Row from "react-bootstrap/Row";
 import timeDifference from "../utils/utils";
 import Article from "./Article";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { NavContext } from "./NavHandler";
 
 export default function Articles() {
-  const params = useParams();
   const [articleList, setArticleList] = useState([]);
   const [articleClicked, setArticleClicked] = useState(false);
+  const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
   function handleArticleClick(article_id) {
     navigate(`/article/${article_id}`);
     setArticleClicked(true);
   }
   useEffect(() => {
+   
     fetchArticles().then(({ data: { articles } }) => {
       setArticleList(articles);
     });
   }, []);
-  if (articleClicked) {
+  if (articleClicked || navigation.header === "article") {
     return (
       <Routes>
         <Route path={`/article/:article_id`} element={<Article />} />
       </Routes>
     );
-  } else if (!articleClicked) {
+  } else if (!articleClicked || navigation.header === "home") {
     return (
       <Row xs={1} className="g-3 pt-2 mt-5">
         {articleList.map((article, index) => (

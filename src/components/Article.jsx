@@ -28,13 +28,14 @@ export default function Article() {
 
   const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
+
   function handleShowCommentsClick() {
     setShowComment((currentShow) => !currentShow);
   }
   function handleVotesUp() {
     setThumbsCounter((counter) => counter + 1);
     updateVotesByArticleId(article_id, 1).catch((err) => {
-      setThumbsCounter((counter) => counter - 1)
+      setThumbsCounter((counter) => counter - 1);
       setArticle((prevArticle) => ({
         ...prevArticle,
         votes: prevArticle.votes - 1,
@@ -44,12 +45,11 @@ export default function Article() {
       ...prevArticle,
       votes: prevArticle.votes + 1,
     }));
-   
   }
   function handleVotesDown() {
     setThumbsCounter((counter) => counter - 1);
     updateVotesByArticleId(article_id, -1).catch((err) => {
-      setThumbsCounter((counter) => counter + 1)
+      setThumbsCounter((counter) => counter + 1);
       setArticle((prevArticle) => ({
         ...prevArticle,
         votes: prevArticle.votes + 1,
@@ -63,7 +63,7 @@ export default function Article() {
 
   useEffect(() => {
     setNavigation((current) => {
-      return { ...current, header: "article" };
+      return { ...current, header: "article", article_id: article_id };
     });
     setIsLoading(true);
     fetchArticleById(article_id).then((article) => {
@@ -74,9 +74,10 @@ export default function Article() {
       });
     });
   }, []);
+
+  
   return (
     <>
-     
       <Container>
         {isLoading ? (
           <Col>
@@ -90,8 +91,8 @@ export default function Article() {
             </Row>
           </Col>
         ) : (
-          <Card className="g-3 pt-2 mt-5 article">
-            <Card.Title>{article.title}</Card.Title>
+          <Card className="g-1 pt-0 mt-5 article ">
+            <Card.Title className="fs-1 mt-4 ">{article.title}</Card.Title>
             <Card.Img variant="top" src={article.article_img_url} />
             <Card.Body>
               <Card.Header className="fs-5 ">{article.author}</Card.Header>
@@ -110,7 +111,15 @@ export default function Article() {
                       fluid
                     />
                   </Button>
-                  <span className={thumbsCounter === 1 ? "thumbs-up" : thumbsCounter === -1 ? "thumbs-down" : null}>
+                  <span
+                    className={
+                      thumbsCounter === 1
+                        ? "thumbs-up"
+                        : thumbsCounter === -1
+                        ? "thumbs-down"
+                        : null
+                    }
+                  >
                     {article.votes}
                   </span>
                   <Button
@@ -143,7 +152,7 @@ export default function Article() {
             {comments.map((comment, index) => {
               return (
                 <Card
-                  className="comments"
+                  className="m-1 comments"
                   key={`${index}+${comment.created_at}`}
                 >
                   <Card.Title key={`${index}+${comment.created_at}`}>
