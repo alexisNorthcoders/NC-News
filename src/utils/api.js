@@ -22,3 +22,10 @@ export const updateVotesByArticleId = (article_id,inc_votes) =>{
     .then(({data:{article}}) => article)
     
 }
+export const insertCommentByArticleId = (article_id,username,comment) =>{
+
+  return ncNews.post(`/articles/${article_id}/comments`,{
+    username: username, body : comment})
+    .then(({data:{article}}) => article)
+    
+}
