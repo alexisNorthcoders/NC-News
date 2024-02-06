@@ -3,9 +3,12 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { NavProvider } from "./components/NavHandler.jsx";
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <NavProvider>
+  <BrowserRouter>
+ <NavProvider>
     <App />
   </NavProvider>
+  </BrowserRouter>
 );

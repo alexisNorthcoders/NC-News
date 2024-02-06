@@ -9,8 +9,8 @@ export const fetchArticles = () => {
   return ncNews.get(`/articles`);
 };
 export const fetchArticleById = (article_id) => {
-
-  return ncNews.get(`/articles/${article_id}`);
+console.log("fecthing article by id")
+  return ncNews.get(`/articles/${article_id}`).then(({data:{article}}) => article);
 };
 export const fetchCommentsByArticleId = (article_id) =>{
   return ncNews.get(`/articles/${article_id}/comments`).then(({data:{comments}}) => comments)
