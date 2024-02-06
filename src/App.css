@@ -5,16 +5,19 @@
   text-align: center;
   background-color: rgb(130, 240, 204);
 }
-.topic{
+.topic {
   text-align: left;
   margin-left: 2px;
-  font-size:x-small;
+  font-size: x-small;
 }
-.comments{
+
+.comments {
   font-size: small;
-  
+
 }
-.article{
+
+.article {
   font-size: medium;
-  text-align:justify;
+  text-align: justify;
 }
+
