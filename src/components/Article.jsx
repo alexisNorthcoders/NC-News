@@ -34,6 +34,7 @@ export default function Article() {
   function handleVotesUp() {
     setThumbsCounter((counter) => counter + 1);
     updateVotesByArticleId(article_id, 1).catch((err) => {
+      setThumbsCounter((counter) => counter - 1)
       setArticle((prevArticle) => ({
         ...prevArticle,
         votes: prevArticle.votes - 1,
@@ -43,15 +44,21 @@ export default function Article() {
       ...prevArticle,
       votes: prevArticle.votes + 1,
     }));
-    updateVotesByArticleId(article_id, 1);
+   
   }
   function handleVotesDown() {
     setThumbsCounter((counter) => counter - 1);
+    updateVotesByArticleId(article_id, -1).catch((err) => {
+      setThumbsCounter((counter) => counter + 1)
+      setArticle((prevArticle) => ({
+        ...prevArticle,
+        votes: prevArticle.votes + 1,
+      }));
+    });
     setArticle((prevArticle) => ({
       ...prevArticle,
       votes: prevArticle.votes - 1,
     }));
-    updateVotesByArticleId(article_id, -1);
   }
 
   useEffect(() => {
@@ -69,32 +76,7 @@ export default function Article() {
   }, []);
   return (
     <>
-      <Navbar className="bg-body-tertiary justify-content-between fixed-top">
-        <Container>
-          <Row>
-            <Col
-              onClick={() => {
-                return;
-              }}
-            >
-              Insert Comment
-            </Col>
-            <Col>
-              <Button
-                onClick={() => {
-                  navigate("/");
-                  setNavigation((current) => {
-                    return { ...current, header: "home" };
-                  });
-                }}
-                variant="danger"
-              >
-                X
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-      </Navbar>
+     
       <Container>
         {isLoading ? (
           <Col>

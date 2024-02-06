@@ -6,9 +6,11 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useContext } from "react";
 import { NavContext } from "./NavHandler";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const {navigation, setNavigation} = useContext(NavContext);
+  const navigate = useNavigate();
 
   if (navigation.header === "home"){
     return (
@@ -26,7 +28,7 @@ export default function Header() {
                 <img
                   id="avatar"
                   href="#profile"
-                  src="avatar.png"
+                  src="../../src/assets/avatar.png"
                   width="50px"
                   alt="avatar image"
                 />
@@ -35,6 +37,42 @@ export default function Header() {
               </Col>
             </Row>
           </Form>
+        </Container>
+      </Navbar>
+    );
+  }
+  else if (navigation.header === "article"){
+    return (
+      <Navbar className="bg-body-tertiary justify-content-between fixed-top">
+        <Container>
+          <Row>
+            <Col><Button variant="success">Insert Comment</Button>
+              
+            </Col>
+            <Col>
+              <Button
+                onClick={() => {
+                  navigate("/");
+                  setNavigation((current) => {
+                    return { ...current, header: "home" };
+                  });
+                }}
+                variant="danger"
+              >
+                Back To Articles
+              </Button>
+            </Col>
+            <Col>
+                <img
+                  id="avatar"
+                  src="../../src/assets/avatar.png"
+                  width="50px"
+                  alt="avatar image"
+                />
+                <br />
+                <a href="#profile">username</a>
+              </Col>
+          </Row>
         </Container>
       </Navbar>
     );
