@@ -3,7 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background-color: rgb(130, 240, 204);
+
+ 
 }
 .topic {
   text-align: left;
@@ -21,3 +22,18 @@
   text-align: justify;
 }
 
+.thumbs{
+  width:60px;
+}
+.thumbs-up{
+  color:green;
+  font-weight: bold;
+  text-shadow: 1px 1px grey;
+  padding-right:3px ;
+}
+.thumbs-down{
+  color:red;
+  font-weight: bold;
+  text-shadow: 1px 1px grey;
+  padding-right:3px ;
+}

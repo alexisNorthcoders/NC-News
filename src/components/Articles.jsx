@@ -13,7 +13,6 @@ export default function Articles() {
   const [articleList, setArticleList] = useState([]);
   const [articleClicked, setArticleClicked] = useState(false);
   const navigate = useNavigate();
-  console.log(params);
   function handleArticleClick(article_id) {
     navigate(`/article/${article_id}`);
     setArticleClicked(true);
