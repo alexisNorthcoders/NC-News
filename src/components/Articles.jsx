@@ -4,6 +4,7 @@ import { fetchArticles } from "../utils/api";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import Spinner from "react-bootstrap/Spinner";
 import timeDifference from "../utils/utils";
 import Article from "./Article";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
@@ -14,24 +15,37 @@ export default function Articles() {
   const [articleClicked, setArticleClicked] = useState(false);
   const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   function handleArticleClick(article_id) {
     navigate(`/article/${article_id}`);
     setArticleClicked(true);
   }
   useEffect(() => {
-   
+    setIsLoading(true)
     fetchArticles().then(({ data: { articles } }) => {
+      setIsLoading(false)
       setArticleList(articles);
     });
   }, []);
   if (articleClicked || navigation.header === "article") {
     return (
       <Routes>
-        <Route path={`/article/:article_id`} element={<Article />} />
+        <Route path={`/article/:article_id/`} element={<Article />} />
       </Routes>
     );
   } else if (!articleClicked || navigation.header === "home") {
-    return (
+    return (<> {isLoading ? (
+      <Col>
+        <Row>
+          <h1>Loading articles...</h1>
+          <Row className="justify-content-center">
+            <Spinner animation="border" variant="primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </Row>
+        </Row>
+      </Col>
+    ):
       <Row xs={1} className="g-3 pt-2 mt-5">
         {articleList.map((article, index) => (
           <Col
@@ -57,7 +71,7 @@ export default function Articles() {
             </Card>
           </Col>
         ))}
-      </Row>
+      </Row>}</>
     );
   }
 }

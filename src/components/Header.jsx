@@ -8,9 +8,13 @@ import { useContext } from "react";
 import { NavContext } from "./NavHandler";
 import { useNavigate } from "react-router-dom";
 
-export default function Header() {
+export default function Header({ onSubmitForm }) {
   const {navigation, setNavigation} = useContext(NavContext);
   const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    onSubmitForm();
+  };
 
   if (navigation.header === "home"){
     return (
@@ -47,10 +51,10 @@ export default function Header() {
         <Container>
           <Row>
             <Col><Button onClick={() => {
-                  navigate(`/article/${navigation.article_id}/comment`);
-                  setNavigation((current) => {
-                    return { ...current, header: "postcomment" };
-                  });
+              setNavigation((current) => {
+                return { ...current, header: "postcomment" };
+              });
+                  
                 }} variant="success">Add Comment</Button>
               
             </Col>
@@ -87,12 +91,7 @@ export default function Header() {
       <Navbar className="bg-body-tertiary justify-content-between fixed-top">
         <Container>
           <Row>
-            <Col><Button onClick={() => {
-              setNavigation((current) => {
-                return { ...current, header: "postcomment" };
-              });
-              navigate(`/article/${navigation.article_id}/comment`); 
-            } }variant="success">Post</Button>
+            <Col><Button onClick={handleButtonClick} variant="success">Post</Button>
               
             </Col>
             <Col>

@@ -16,9 +16,11 @@ import {
 } from "react-bootstrap";
 import timeDifference from "../utils/utils";
 import { NavContext } from "./NavHandler";
-import { useParams, useNavigate } from "react-router-dom";
+import { Routes,Route,useParams, useNavigate } from "react-router-dom";
+import PostComment from "./PostComment";
 
-export default function Article() {
+
+export default function Article({setPostButtonClicked,postButtonClicked}) {
   const [article, setArticle] = useState({});
   const { article_id } = useParams();
   const [comments, setComments] = useState([]);
@@ -67,16 +69,20 @@ export default function Article() {
     });
     setIsLoading(true);
     fetchArticleById(article_id).then((article) => {
+      
       setArticle(article);
       fetchCommentsByArticleId(article.article_id).then((comments) => {
+        console.log("fetching comments...")
         setComments(comments);
         setIsLoading(false);
       });
     });
   }, []);
 
-  
-  return (
+  if (navigation.header === "postcomment"){
+    return <PostComment article={article} setArticle={setArticle} setPostButtonClicked={setPostButtonClicked} postButtonClicked={postButtonClicked}/>
+    } 
+ return (
     <>
       <Container>
         {isLoading ? (
@@ -140,7 +146,7 @@ export default function Article() {
                   variant="light"
                   onClick={handleShowCommentsClick}
                 >
-                  {comments.length} Comments
+                  {article.comment_count} Comments
                 </Button>
                 <span>{timeDifference(article.created_at)}</span>
               </Card.Footer>

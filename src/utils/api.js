@@ -26,6 +26,6 @@ export const insertCommentByArticleId = (article_id,username,comment) =>{
 
   return ncNews.post(`/articles/${article_id}/comments`,{
     username: username, body : comment})
-    .then(({data:{article}}) => article)
+    .then(({data:{comment}}) => comment)
     
 }
