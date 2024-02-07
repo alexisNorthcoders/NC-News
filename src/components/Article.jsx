@@ -16,11 +16,10 @@ import {
 } from "react-bootstrap";
 import timeDifference from "../utils/utils";
 import { NavContext } from "./NavHandler";
-import { Routes, Route, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import PostComment from "./PostComment";
 import Comment from "./Comment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const [article, setArticle] = useState({});
@@ -175,7 +174,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
         {showComment ? (
           <Col>
             {comments.map((comment, index) => {
-              return (<Comment comment={comment}/>);
+              return (<Comment key={`${comment.comment_id}`}comment={comment}/>);
             })}
           </Col>
         ) : null}

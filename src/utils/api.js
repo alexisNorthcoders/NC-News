@@ -29,3 +29,7 @@ export const insertCommentByArticleId = (article_id,username,comment) =>{
     .then(({data:{comment}}) => comment)
     
 }
+
+export const deleteCommentById = (comment_id) =>{
+  return ncNews.delete(`/comments/${comment_id}`)
+}
