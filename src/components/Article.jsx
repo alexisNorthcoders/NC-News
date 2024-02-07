@@ -164,8 +164,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
                   variant="light"
                   onClick={handleShowCommentsClick}
                 >
-                  {article.comment_count} Comments
-                </Button>
+                  {showComment? "Hide":"Show"} Comments ({article.comment_count}) </Button>
                 <span>{timeDifference(article.created_at)}</span>
               </Card.Footer>
             </Card.Body>
