@@ -41,6 +41,13 @@ export default function PostComment({
   }
   useEffect(() => {
     if (postButtonClicked) {
+      if (!comment) {
+        setErrorMessage("Comment is empty.")
+        setShowError(true)
+
+        setPostButtonClicked(false)
+      }
+      else{
       setIsLoading(true)
       insertCommentByArticleId(article_id, navigation.username, comment)
         .then(() => {
@@ -57,7 +64,7 @@ export default function PostComment({
           setShowError(true);
           setPostButtonClicked(false);
         });
-    }
+    }}
     if (!article) {
       fetchArticleById(article_id).then((data) => {
         setNavigation((current) => ({
