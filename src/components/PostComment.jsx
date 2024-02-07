@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { NavContext } from "./NavHandler";
 import { useNavigate, useParams } from "react-router-dom";
-import { Form, Card, Modal, Button } from "react-bootstrap";
+import { Form, Card, Modal, Button,Col,Spinner,Row } from "react-bootstrap";
 import { fetchArticleById, insertCommentByArticleId } from "../utils/api";
 
 export default function PostComment({
@@ -9,6 +9,7 @@ export default function PostComment({
   setArticle,
   postButtonClicked,
   setPostButtonClicked,
+  setSuccessComment,
 }) {
   const { navigation, setNavigation } = useContext(NavContext);
   const { article_id } = useParams();
@@ -17,6 +18,7 @@ export default function PostComment({
   const [show, setShow] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   function handleClose(){
@@ -39,10 +41,13 @@ export default function PostComment({
   }
   useEffect(() => {
     if (postButtonClicked) {
+      setIsLoading(true)
       insertCommentByArticleId(article_id, navigation.username, comment)
-        .then((comment) => {
+        .then(() => {
           setPostButtonClicked(false);
+          setIsLoading(false)
           setShow(true);
+          setSuccessComment(true)
          
         })
         .catch(({response}) => {
@@ -96,6 +101,18 @@ export default function PostComment({
           </Card.Text>
         </Card.Body>
       </Card>
+      {isLoading ? (
+          <Col>
+            <Row>
+              <h1>Posting Comment...</h1>
+              <Row className="justify-content-center">
+                <Spinner animation="border" variant="primary" role="status">
+                  <span className="visually-hidden">Posting comment state</span>
+                </Spinner>
+              </Row>
+            </Row>
+          </Col>
+        ) : (
       <Form id="postComment">
         <Form.Label className="fs-1" htmlFor="comment">
           Add Comment
@@ -114,7 +131,7 @@ export default function PostComment({
         <Form.Text id="commentHelp" muted>
           Be civil.
         </Form.Text>
-      </Form>
+      </Form>)}
     </>
   );
 }

@@ -16,17 +16,17 @@ import {
 } from "react-bootstrap";
 import timeDifference from "../utils/utils";
 import { NavContext } from "./NavHandler";
-import { Routes,Route,useParams, useNavigate } from "react-router-dom";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import PostComment from "./PostComment";
 
-
-export default function Article({setPostButtonClicked,postButtonClicked}) {
+export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const [article, setArticle] = useState({});
   const { article_id } = useParams();
   const [comments, setComments] = useState([]);
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [thumbsCounter, setThumbsCounter] = useState(0);
+  const [successComment, setSuccessComment] = useState(false);
 
   const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
@@ -64,25 +64,41 @@ export default function Article({setPostButtonClicked,postButtonClicked}) {
   }
 
   useEffect(() => {
+    if (successComment){
+    fetchCommentsByArticleId(article_id).then((comments) => {
+      
+      console.log("fetching comments after posting...");
+      
+      setComments(comments);
+     
+    })}
+  }, [successComment]);
+  useEffect(() => {
     setNavigation((current) => {
       return { ...current, header: "article", article_id: article_id };
     });
     setIsLoading(true);
     fetchArticleById(article_id).then((article) => {
-      
       setArticle(article);
       fetchCommentsByArticleId(article.article_id).then((comments) => {
-        console.log("fetching comments...")
+        console.log("fetching comments after fetching article...");
         setComments(comments);
         setIsLoading(false);
       });
     });
   }, []);
-
-  if (navigation.header === "postcomment"){
-    return <PostComment article={article} setArticle={setArticle} setPostButtonClicked={setPostButtonClicked} postButtonClicked={postButtonClicked}/>
-    } 
- return (
+  if (navigation.header === "postcomment") {
+    return (
+      <PostComment
+      setSuccessComment={setSuccessComment}
+        article={article}
+        setArticle={setArticle}
+        setPostButtonClicked={setPostButtonClicked}
+        postButtonClicked={postButtonClicked}
+      />
+    );
+  }
+  return (
     <>
       <Container>
         {isLoading ? (
