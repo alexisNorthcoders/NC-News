@@ -21,6 +21,7 @@ export default function Comment({
   thumbsCounter,
   handleVotesUp,
   handleVotesDown,
+
 }) {
   const { navigation, setNavigation } = useContext(NavContext);
   const [buttonState, setButtonState] = useState({

@@ -31,13 +31,12 @@ export default function Header({ onSubmitForm }) {
               <Col>
                 <img
                   id="avatar"
-                  href="#profile"
                   src="../../src/assets/avatar.png"
                   width="50px"
                   alt="avatar image"
                 />
                 <br />
-                <a href="#profile">username</a>
+                <a href="#profile">{navigation.username}</a>
               </Col>
             </Row>
           </Form>
@@ -79,7 +78,7 @@ export default function Header({ onSubmitForm }) {
                   alt="avatar image"
                 />
                 <br />
-                <a href="#profile">username</a>
+                <a href="#profile">{navigation.username}</a>
               </Col>
           </Row>
         </Container>
@@ -116,7 +115,7 @@ export default function Header({ onSubmitForm }) {
                   alt="avatar image"
                 />
                 <br />
-                <a href="#profile">username</a>
+                <a href="#profile">{navigation.username}</a>
               </Col>
           </Row>
         </Container>
