@@ -18,6 +18,9 @@ import timeDifference from "../utils/utils";
 import { NavContext } from "./NavHandler";
 import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import PostComment from "./PostComment";
+import Comment from "./Comment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const [article, setArticle] = useState({});
@@ -27,6 +30,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const [isLoading, setIsLoading] = useState(true);
   const [thumbsCounter, setThumbsCounter] = useState(0);
   const [successComment, setSuccessComment] = useState(false);
+
 
   const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
@@ -64,14 +68,13 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   }
 
   useEffect(() => {
-    if (successComment){
-    fetchCommentsByArticleId(article_id).then((comments) => {
-      
-      console.log("fetching comments after posting...");
-      
-      setComments(comments);
-     
-    })}
+    if (successComment) {
+      fetchCommentsByArticleId(article_id).then((comments) => {
+        console.log("fetching comments after posting...");
+
+        setComments(comments);
+      });
+    }
   }, [successComment]);
   useEffect(() => {
     setNavigation((current) => {
@@ -90,7 +93,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   if (navigation.header === "postcomment") {
     return (
       <PostComment
-      setSuccessComment={setSuccessComment}
+        setSuccessComment={setSuccessComment}
         article={article}
         setArticle={setArticle}
         setPostButtonClicked={setPostButtonClicked}
@@ -172,20 +175,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
         {showComment ? (
           <Col>
             {comments.map((comment, index) => {
-              return (
-                <Card
-                  className="m-1 comments"
-                  key={`${index}+${comment.created_at}`}
-                >
-                  <Card.Title key={`${index}+${comment.created_at}`}>
-                    {comment.author}
-                  </Card.Title>
-                  <Card.Text>{comment.body}</Card.Text>
-                  <Card.Footer>
-                    {comment.votes} | {timeDifference(comment.created_at)}
-                  </Card.Footer>
-                </Card>
-              );
+              return (<Comment comment={comment}/>);
             })}
           </Col>
         ) : null}
