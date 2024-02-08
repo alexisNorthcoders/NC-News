@@ -77,10 +77,12 @@ export default function NavBarButtons({
       style={{ marginLeft: "5%" }}
     >
     <Row className="navbar-buttons-row d-flex flex-row">
-        <Button className="m-1" onClick={() => setShowSortOptions((current) => !current)} variant="info">Sort by</Button>{showSortOptions? <><Button className="m-1" onClick={() => handleSort('created_at')}>Date</Button>
-        <Button className="m-1" onClick={() => handleSort('comment_count')}>Comments</Button>
-        <Button className="m-1" onClick={() => handleSort('votes')}>Votes</Button>
-        <Button className="m-1" onClick={() => handleOrder(order)}>Order: {order}</Button></> : null}
+        <Button className="m-1" variant={showSortOptions ? 'outline-warning' : 'warning'}onClick={() => setShowSortOptions((current) => !current)}>Sort by</Button>
+        {showSortOptions? <>
+        <Button className="m-1" variant={selectedTopic.sort_by === 'created_at' ? 'outline-success' : 'outline-success'}onClick={() => handleSort('created_at')}>Date</Button>
+        <Button className="m-1" variant={selectedTopic.sort_by === 'comment_count' ? 'success' : 'outline-success'}onClick={() => handleSort('comment_count')}>Comments</Button>
+        <Button className="m-1" variant={selectedTopic.sort_by === 'votes' ? 'success' : 'outline-success'}onClick={() => handleSort('votes')}>Votes</Button>
+        <Button className="m-1" variant={selectedTopic.order === 'asc' ? 'success' : 'outline-success'}onClick={() => handleOrder(order)}>Order: {order}</Button></> : null}
         
       </Row> 
       <Row className="navbar-buttons-row d-flex flex-row">{navBarButtons}</Row>
