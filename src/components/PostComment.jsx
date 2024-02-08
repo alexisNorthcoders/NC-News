@@ -6,10 +6,10 @@ import { fetchArticleById, insertCommentByArticleId } from "../utils/api";
 
 export default function PostComment({
   article,
-  setArticle,
   postButtonClicked,
   setPostButtonClicked,
   setSuccessComment,
+  setShowComment,
 }) {
   const { navigation, setNavigation } = useContext(NavContext);
   const { article_id } = useParams();
@@ -28,6 +28,8 @@ export default function PostComment({
         return { ...current, header: "article" };
       });
       navigate(`/article/${navigation.article_id}`)
+      setShowComment(true)
+      console.log("showcomment to true")
     }
     else if (showError){
       setShowError(false)
@@ -41,6 +43,13 @@ export default function PostComment({
   }
   useEffect(() => {
     if (postButtonClicked) {
+      if (!comment) {
+        setErrorMessage("Comment is empty.")
+        setShowError(true)
+
+        setPostButtonClicked(false)
+      }
+      else{
       setIsLoading(true)
       insertCommentByArticleId(article_id, navigation.username, comment)
         .then(() => {
@@ -48,8 +57,7 @@ export default function PostComment({
           setIsLoading(false)
           setShow(true);
           setSuccessComment(true)
-         
-        })
+         })
         .catch(({response}) => {
           
           setErrorMessage(response.data.message);
@@ -57,7 +65,7 @@ export default function PostComment({
           setShowError(true);
           setPostButtonClicked(false);
         });
-    }
+    }}
     if (!article) {
       fetchArticleById(article_id).then((data) => {
         setNavigation((current) => ({

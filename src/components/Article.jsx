@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import Card from "react-bootstrap/Card";
 import {
   fetchArticleById,
@@ -34,8 +34,17 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
 
+  const commentRef = useRef()
+
   function handleShowCommentsClick() {
-    setShowComment((currentShow) => !currentShow);
+    setShowComment((currentShow) => !currentShow)
+    if (!showComment){
+      fetchCommentsByArticleId(article.article_id).then((comments) => {
+        
+        setComments(comments);
+        
+      });
+    }
   }
   function handleVotesUp() {
     setThumbsCounter((counter) => counter + 1);
@@ -65,12 +74,19 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
       votes: prevArticle.votes - 1,
     }));
   }
-
+  useEffect(() => {
+    if (showComment && commentRef.current) {
+      const headerHeight = 200
+      window.scrollTo({
+        top: commentRef.current.offsetTop - headerHeight,
+        behavior: "smooth"
+      });
+    }
+  }, [showComment]);
   useEffect(() => {
     if (successComment) {
       fetchCommentsByArticleId(article_id).then((comments) => {
-        console.log("fetching comments after posting...");
-
+       
         setComments(comments);
       });
     }
@@ -83,7 +99,6 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
     fetchArticleById(article_id).then((article) => {
       setArticle(article);
       fetchCommentsByArticleId(article.article_id).then((comments) => {
-        console.log("fetching comments after fetching article...");
         setComments(comments);
         setIsLoading(false);
       });
@@ -92,6 +107,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   if (navigation.header === "postcomment") {
     return (
       <PostComment
+      setShowComment={setShowComment}
         setSuccessComment={setSuccessComment}
         article={article}
         setArticle={setArticle}
@@ -158,23 +174,23 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
                       fluid
                     />
                   </Button>
-                </span>
+                </span> 
                 <Button
                   className="fs-4"
                   variant="light"
                   onClick={handleShowCommentsClick}
                 >
-                  {article.comment_count} Comments
-                </Button>
+                  {showComment? "Hide":"Show"} Comments ({article.comment_count}) </Button>
                 <span>{timeDifference(article.created_at)}</span>
               </Card.Footer>
+             
             </Card.Body>
           </Card>
-        )}
+        )} 
         {showComment ? (
-          <Col>
+          <Col ref={commentRef}>
             {comments.map((comment, index) => {
-              return (<Comment key={`${comment.comment_id}`}comment={comment}/>);
+              return (<Comment key={`${comment.comment_id}`} comment={comment}/>);
             })}
           </Col>
         ) : null}

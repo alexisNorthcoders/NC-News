@@ -4,44 +4,43 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { NavContext } from "./NavHandler";
 import { useNavigate } from "react-router-dom";
+import Topics from "./Topics";
 
-export default function Header({ onSubmitForm }) {
+export default function Header({ selectedTopic,setSelectedTopic,onSubmitForm }) {
+ 
+  
   const {navigation, setNavigation} = useContext(NavContext);
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
+    
     onSubmitForm();
   };
 
   if (navigation.header === "home"){
     return (
-      <Navbar className="bg-body-tertiary justify-content-between fixed-top">
-        <Container>
-          <Form>
-            <Row>
-              <Col>
-                <Form.Control type="text" placeholder="Search" />
-              </Col>
-              <Col xs={1}>
-                <Button type="submit">S</Button>
-              </Col>
-              <Col>
+      <Navbar className="navbar bg-tertiary justify-content-between fixed-top">
+        <Container className="navbar-container">
+        <Row className="navbar-row justify-content-md-center">
+          <Col></Col>
+          <Col className="d-flex flex-row align-items-end align-left" >
+            <Topics setSelectedTopic={setSelectedTopic} selectedTopic={selectedTopic}/></Col>
+           
+            <Col className="d-flex flex-column align-items-end"> 
                 <img
                   id="avatar"
-                  href="#profile"
                   src="../../src/assets/avatar.png"
                   width="50px"
                   alt="avatar image"
                 />
-                <br />
-                <a href="#profile">username</a>
-              </Col>
+                
+                <a href="#profile">{navigation.username}</a>
+                </Col>
             </Row>
-          </Form>
-        </Container>
+         </Container>
       </Navbar>
     );
   }
@@ -79,7 +78,7 @@ export default function Header({ onSubmitForm }) {
                   alt="avatar image"
                 />
                 <br />
-                <a href="#profile">username</a>
+                <a href="#profile">{navigation.username}</a>
               </Col>
           </Row>
         </Container>
@@ -116,7 +115,7 @@ export default function Header({ onSubmitForm }) {
                   alt="avatar image"
                 />
                 <br />
-                <a href="#profile">username</a>
+                <a href="#profile">{navigation.username}</a>
               </Col>
           </Row>
         </Container>
