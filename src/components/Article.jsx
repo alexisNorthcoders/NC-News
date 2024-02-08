@@ -39,7 +39,6 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   function handleShowCommentsClick() {
     setShowComment((currentShow) => !currentShow)
     if (!showComment){
-      console.log("fetching comments after clicking button")
       fetchCommentsByArticleId(article.article_id).then((comments) => {
         
         setComments(comments);
@@ -87,8 +86,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   useEffect(() => {
     if (successComment) {
       fetchCommentsByArticleId(article_id).then((comments) => {
-        console.log("fetching comments after posting...");
-
+       
         setComments(comments);
       });
     }
@@ -101,7 +99,6 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
     fetchArticleById(article_id).then((article) => {
       setArticle(article);
       fetchCommentsByArticleId(article.article_id).then((comments) => {
-        console.log("fetching comments after fetching article...");
         setComments(comments);
         setIsLoading(false);
       });

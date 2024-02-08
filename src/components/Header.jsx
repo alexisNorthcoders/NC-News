@@ -9,44 +9,38 @@ import { NavContext } from "./NavHandler";
 import { useNavigate } from "react-router-dom";
 import Topics from "./Topics";
 
-export default function Header({ onSubmitForm }) {
+export default function Header({ selectedTopic,setSelectedTopic,onSubmitForm }) {
  
-  const [topic,setTopic] = useState("")
+  
   const {navigation, setNavigation} = useContext(NavContext);
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    console.log("clicked button on header")
+    
     onSubmitForm();
   };
 
   if (navigation.header === "home"){
     return (
-      <Navbar className="bg-body-tertiary justify-content-between fixed-top">
-        <Container>
-          
-          <Form>
-            <Row> <Col>
-            <Topics/></Col>
-              <Col>
-                <Form.Control type="text" placeholder="Search" />
-              </Col>
-              <Col xs={1}>
-                <Button onClick={handleButtonClick} type="submit">Search</Button>
-              </Col>
-              <Col>
+      <Navbar className="navbar bg-tertiary justify-content-between fixed-top">
+        <Container className="navbar-container">
+        <Row className="navbar-row justify-content-md-center">
+          <Col></Col>
+          <Col className="d-flex flex-row align-items-end align-left" >
+            <Topics setSelectedTopic={setSelectedTopic} selectedTopic={selectedTopic}/></Col>
+           
+            <Col className="d-flex flex-column align-items-end"> 
                 <img
                   id="avatar"
                   src="../../src/assets/avatar.png"
                   width="50px"
                   alt="avatar image"
                 />
-                <br />
+                
                 <a href="#profile">{navigation.username}</a>
-              </Col>
+                </Col>
             </Row>
-          </Form>
-        </Container>
+         </Container>
       </Navbar>
     );
   }

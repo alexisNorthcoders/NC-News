@@ -10,7 +10,7 @@ import Article from "./Article";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { NavContext } from "./NavHandler";
 
-export default function Articles() {
+export default function Articles({selectedTopic}) {
   const [articleList, setArticleList] = useState([]);
   const [articleClicked, setArticleClicked] = useState(false);
   const { navigation, setNavigation } = useContext(NavContext);
@@ -22,11 +22,11 @@ export default function Articles() {
   }
   useEffect(() => {
     setIsLoading(true)
-    fetchArticles().then(({ data: { articles } }) => {
+    fetchArticles(selectedTopic).then(({ data: { articles } }) => {
       setIsLoading(false)
       setArticleList(articles);
     });
-  }, []);
+  }, [selectedTopic]);
   if (articleClicked || navigation.header === "article") {
     return (
       <Routes>
