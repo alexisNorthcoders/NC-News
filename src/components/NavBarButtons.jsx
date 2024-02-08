@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import Topics from "./Topics";
 import { Col, Row } from "react-bootstrap";
+import { useState } from "react";
 
 export default function NavBarButtons({
   header,
@@ -11,6 +12,10 @@ export default function NavBarButtons({
   setSelectedTopic,
   selectedTopic,
 }) {
+ 
+  const [order, setOrder] = useState('desc');
+  const [showSortOptions, setShowSortOptions] = useState(false);
+
   function createButton(onClick, variant, label) {
     return (
       <span>
@@ -26,6 +31,15 @@ export default function NavBarButtons({
       navigate(navigateTo);
     }
   }
+  function handleSort (sort_by){
+    
+    setSelectedTopic({ ...selectedTopic,  sort_by: sort_by, });
+  };
+  function handleOrder (order){
+    setOrder(order === 'desc' ? 'asc' : 'desc')
+    setSelectedTopic({ ...selectedTopic,  order: order, });
+  };
+
   let navBarButtons;
   if (header === "home") {
     navBarButtons = (
@@ -62,13 +76,13 @@ export default function NavBarButtons({
       className="d-flex flex-column align-items-left"
       style={{ marginLeft: "5%" }}
     >
-      <Row className="navbar-buttons-row d-flex flex-row">
-        <Button className="m-1" variant="info">Sort by</Button>
-        <Button className="m-1">Date</Button>
-        <Button className="m-1">Comments</Button>
-        <Button className="m-1">Votes</Button>
-        <Button className="m-1">Order</Button>
-      </Row>
+    <Row className="navbar-buttons-row d-flex flex-row">
+        <Button className="m-1" onClick={() => setShowSortOptions((current) => !current)} variant="info">Sort by</Button>{showSortOptions? <><Button className="m-1" onClick={() => handleSort('created_at')}>Date</Button>
+        <Button className="m-1" onClick={() => handleSort('comment_count')}>Comments</Button>
+        <Button className="m-1" onClick={() => handleSort('votes')}>Votes</Button>
+        <Button className="m-1" onClick={() => handleOrder(order)}>Order: {order}</Button></> : null}
+        
+      </Row> 
       <Row className="navbar-buttons-row d-flex flex-row">{navBarButtons}</Row>
     </Col>
   );

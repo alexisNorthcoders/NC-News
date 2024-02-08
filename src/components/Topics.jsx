@@ -9,7 +9,7 @@ export default function Topics({selectedTopic,setSelectedTopic}) {
 
     function handleTopicChange(topic){
         
-        setSelectedTopic(topic);
+        setSelectedTopic({ ...selectedTopic,  topic: topic, });
         if (topic){
         navigate(`/?topic=${topic}`)}
         else{
