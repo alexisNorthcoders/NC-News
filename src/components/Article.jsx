@@ -17,23 +17,30 @@ import {
 import timeDifference from "../utils/utils";
 import { NavContext } from "./NavHandler";
 import { useParams, useNavigate } from "react-router-dom";
+import PostComment from "./PostComment";
+import Comment from "./Comment";
 
-export default function Article() {
+
+export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const [article, setArticle] = useState({});
   const { article_id } = useParams();
   const [comments, setComments] = useState([]);
   const [showComment, setShowComment] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [thumbsCounter, setThumbsCounter] = useState(0);
+  const [successComment, setSuccessComment] = useState(false);
+
 
   const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
+
   function handleShowCommentsClick() {
     setShowComment((currentShow) => !currentShow);
   }
   function handleVotesUp() {
     setThumbsCounter((counter) => counter + 1);
     updateVotesByArticleId(article_id, 1).catch((err) => {
+      setThumbsCounter((counter) => counter - 1);
       setArticle((prevArticle) => ({
         ...prevArticle,
         votes: prevArticle.votes - 1,
@@ -43,58 +50,58 @@ export default function Article() {
       ...prevArticle,
       votes: prevArticle.votes + 1,
     }));
-    updateVotesByArticleId(article_id, 1);
   }
   function handleVotesDown() {
     setThumbsCounter((counter) => counter - 1);
+    updateVotesByArticleId(article_id, -1).catch((err) => {
+      setThumbsCounter((counter) => counter + 1);
+      setArticle((prevArticle) => ({
+        ...prevArticle,
+        votes: prevArticle.votes + 1,
+      }));
+    });
     setArticle((prevArticle) => ({
       ...prevArticle,
       votes: prevArticle.votes - 1,
     }));
-    updateVotesByArticleId(article_id, -1);
   }
 
   useEffect(() => {
+    if (successComment) {
+      fetchCommentsByArticleId(article_id).then((comments) => {
+        console.log("fetching comments after posting...");
+
+        setComments(comments);
+      });
+    }
+  }, [successComment]);
+  useEffect(() => {
     setNavigation((current) => {
-      return { ...current, header: "article" };
+      return { ...current, header: "article", article_id: article_id };
     });
     setIsLoading(true);
     fetchArticleById(article_id).then((article) => {
       setArticle(article);
       fetchCommentsByArticleId(article.article_id).then((comments) => {
+        console.log("fetching comments after fetching article...");
         setComments(comments);
         setIsLoading(false);
       });
     });
   }, []);
+  if (navigation.header === "postcomment") {
+    return (
+      <PostComment
+        setSuccessComment={setSuccessComment}
+        article={article}
+        setArticle={setArticle}
+        setPostButtonClicked={setPostButtonClicked}
+        postButtonClicked={postButtonClicked}
+      />
+    );
+  }
   return (
     <>
-      <Navbar className="bg-body-tertiary justify-content-between fixed-top">
-        <Container>
-          <Row>
-            <Col
-              onClick={() => {
-                return;
-              }}
-            >
-              Insert Comment
-            </Col>
-            <Col>
-              <Button
-                onClick={() => {
-                  navigate("/");
-                  setNavigation((current) => {
-                    return { ...current, header: "home" };
-                  });
-                }}
-                variant="danger"
-              >
-                X
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-      </Navbar>
       <Container>
         {isLoading ? (
           <Col>
@@ -108,8 +115,8 @@ export default function Article() {
             </Row>
           </Col>
         ) : (
-          <Card className="g-3 pt-2 mt-5 article">
-            <Card.Title>{article.title}</Card.Title>
+          <Card className="g-1 pt-0 mt-5 article ">
+            <Card.Title className="fs-1 mt-4 ">{article.title}</Card.Title>
             <Card.Img variant="top" src={article.article_img_url} />
             <Card.Body>
               <Card.Header className="fs-5 ">{article.author}</Card.Header>
@@ -128,7 +135,15 @@ export default function Article() {
                       fluid
                     />
                   </Button>
-                  <span className={thumbsCounter === 1 ? "thumbs-up" : thumbsCounter === -1 ? "thumbs-down" : null}>
+                  <span
+                    className={
+                      thumbsCounter === 1
+                        ? "thumbs-up"
+                        : thumbsCounter === -1
+                        ? "thumbs-down"
+                        : null
+                    }
+                  >
                     {article.votes}
                   </span>
                   <Button
@@ -149,7 +164,7 @@ export default function Article() {
                   variant="light"
                   onClick={handleShowCommentsClick}
                 >
-                  {comments.length} Comments
+                  {article.comment_count} Comments
                 </Button>
                 <span>{timeDifference(article.created_at)}</span>
               </Card.Footer>
@@ -159,20 +174,7 @@ export default function Article() {
         {showComment ? (
           <Col>
             {comments.map((comment, index) => {
-              return (
-                <Card
-                  className="comments"
-                  key={`${index}+${comment.created_at}`}
-                >
-                  <Card.Title key={`${index}+${comment.created_at}`}>
-                    {comment.author}
-                  </Card.Title>
-                  <Card.Text>{comment.body}</Card.Text>
-                  <Card.Footer>
-                    {comment.votes} | {timeDifference(comment.created_at)}
-                  </Card.Footer>
-                </Card>
-              );
+              return (<Comment key={`${comment.comment_id}`}comment={comment}/>);
             })}
           </Col>
         ) : null}
