@@ -8,119 +8,73 @@ import { useContext, useState } from "react";
 import { NavContext } from "./NavHandler";
 import { useNavigate } from "react-router-dom";
 import Topics from "./Topics";
+import UserAvatar from "./userAvatar";
 
-export default function Header({ selectedTopic,setSelectedTopic,onSubmitForm }) {
- 
-  
-  const {navigation, setNavigation} = useContext(NavContext);
+function NavBarButtons ({ header, setNavigation, navigate, article_id, handleButtonClick, setSelectedTopic, selectedTopic }) {
+   
+  const createButton = (onClick, variant, text) => (
+    <Button onClick={onClick} variant={variant}>
+      {text}
+    </Button>
+  );
+
+  let buttons;
+  if (header === "home") {
+    buttons = (
+      <Topics setSelectedTopic={setSelectedTopic} selectedTopic={selectedTopic} />
+    );
+  } else if (header === "article") {
+    buttons = (
+      <>
+        {createButton(() => setNavigation((current) => ({ ...current, header: "postcomment" })), "success", "Add Comment")}
+        {createButton(() => { navigate("/"); setNavigation((current) => ({ ...current, header: "home" })); }, "primary", "Home")}
+      </>
+    );
+  } else if (header === "postcomment") {
+    buttons = (
+      <>
+        {createButton(handleButtonClick, "success", "Post")}
+        {createButton(() => { setNavigation((current) => ({ ...current, header: "article" })); navigate(`/article/${article_id}`); }, "danger", "Cancel")}
+      </>
+    );
+  }
+
+  return (
+    <Col className="d-flex flex-row align-items-end align-left">
+      {buttons}
+    </Col>
+  );
+};
+
+export default function Header({
+  selectedTopic,
+  setSelectedTopic,
+  onSubmitForm,
+}) {
+  const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    
     onSubmitForm();
   };
 
-  if (navigation.header === "home"){
-    return (
-      <Navbar className="navbar bg-tertiary justify-content-between fixed-top">
+return (
+      <Navbar className={`navbar bg-tertiary justify-content-between fixed-top`}>
         <Container className="navbar-container">
-        <Row className="navbar-row justify-content-md-center">
-          <Col></Col>
-          <Col className="d-flex flex-row align-items-end align-left" >
-            <Topics setSelectedTopic={setSelectedTopic} selectedTopic={selectedTopic}/></Col>
-           
-            <Col className="d-flex flex-column align-items-end"> 
-                <img
-                  id="avatar"
-                  src="../../src/assets/avatar.png"
-                  width="50px"
-                  alt="avatar image"
-                />
-                
-                <a href="#profile">{navigation.username}</a>
-                </Col>
-            </Row>
-         </Container>
-      </Navbar>
-    );
-  }
-  else if (navigation.header === "article"){
-    return (
-      <Navbar className="bg-body-tertiary justify-content-between fixed-top">
-        <Container>
-          <Row>
-            <Col><Button onClick={() => {
-              setNavigation((current) => {
-                return { ...current, header: "postcomment" };
-              });
-                  
-                }} variant="success">Add Comment</Button>
-              
-            </Col>
-            <Col>
-              <Button
-                onClick={() => {
-                  navigate("/");
-                  setNavigation((current) => {
-                    return { ...current, header: "home" };
-                  });
-                }}
-                variant="primary"
-              >
-                Home
-              </Button>
-            </Col>
-            <Col>
-                <img
-                  id="avatar"
-                  src="../../src/assets/avatar.png"
-                  width="50px"
-                  alt="avatar image"
-                />
-                <br />
-                <a href="#profile">{navigation.username}</a>
-              </Col>
+          <Row className="navbar-row justify-content-md-center">
+            <Col></Col>
+            <NavBarButtons
+            selectedTopic={selectedTopic}
+            setSelectedTopic={setSelectedTopic}
+              header={navigation.header}
+              setNavigation={setNavigation}
+              navigate={navigate}
+              article_id={navigation.article_id}
+              handleButtonClick={handleButtonClick}
+            />
+            <UserAvatar username={navigation.username} />
           </Row>
         </Container>
       </Navbar>
     );
-  }
-  else if (navigation.header === "postcomment"){
-    return (
-      <Navbar className="bg-body-tertiary justify-content-between fixed-top">
-        <Container>
-          <Row>
-            <Col><Button onClick={handleButtonClick} variant="success">Post</Button>
-              
-            </Col>
-            <Col>
-              <Button
-                onClick={() => {
-                  setNavigation((current) => {
-                    return { ...current, header: "article" };
-                  });
-                  navigate(`/article/${navigation.article_id}`);
-                
-                }}
-                variant="danger"
-              >
-                Cancel
-              </Button>
-            </Col>
-            <Col>
-                <img
-                  id="avatar"
-                  src="../../src/assets/avatar.png"
-                  width="50px"
-                  alt="avatar image"
-                />
-                <br />
-                <a href="#profile">{navigation.username}</a>
-              </Col>
-          </Row>
-        </Container>
-      </Navbar>
-    );
-  }
-
 }
