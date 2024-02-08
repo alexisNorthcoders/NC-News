@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import Topics from "./Topics";
-import { Col } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 export default function NavBarButtons({
   header,
@@ -13,9 +13,11 @@ export default function NavBarButtons({
 }) {
   function createButton(onClick, variant, label) {
     return (
-      <Button onClick={onClick} variant={variant}>
-        {label}
-      </Button>
+      <span>
+        <Button onClick={onClick} variant={variant}>
+          {label}
+        </Button>
+      </span>
     );
   }
   function handleNavigation(navigationHeader, navigateTo = null) {
@@ -40,11 +42,7 @@ export default function NavBarButtons({
           "success",
           "Add Comment"
         )}
-        {createButton(
-          () => handleNavigation("home", "/"),
-          "primary",
-          "Home"
-        )}
+        {createButton(() => handleNavigation("home", "/"), "primary", "Home")}
       </>
     );
   } else if (header === "postcomment") {
@@ -60,8 +58,18 @@ export default function NavBarButtons({
     );
   }
   return (
-    <Col className="d-flex flex-row align-items-end align-left">
-      {navBarButtons}
+    <Col
+      className="d-flex flex-column align-items-left"
+      style={{ marginLeft: "5%" }}
+    >
+      <Row className="navbar-buttons-row d-flex flex-row">
+        <Button className="m-1" variant="info">Sort by</Button>
+        <Button className="m-1">Date</Button>
+        <Button className="m-1">Comments</Button>
+        <Button className="m-1">Votes</Button>
+        <Button className="m-1">Order</Button>
+      </Row>
+      <Row className="navbar-buttons-row d-flex flex-row">{navBarButtons}</Row>
     </Col>
   );
 }
