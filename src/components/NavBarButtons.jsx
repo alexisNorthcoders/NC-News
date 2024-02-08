@@ -18,10 +18,10 @@ export default function NavBarButtons({
       </Button>
     );
   }
-  function handleNavigation(navigationHeader, navigate = null) {
+  function handleNavigation(navigationHeader, navigateTo = null) {
     setNavigation((current) => ({ ...current, header: navigationHeader }));
-    if (navigate) {
-      navigate(navigate);
+    if (navigateTo) {
+      navigate(navigateTo);
     }
   }
   let navBarButtons;
