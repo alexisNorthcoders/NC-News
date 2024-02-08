@@ -9,7 +9,11 @@ import { useState } from "react";
 
 function App() {
   const [postButtonClicked, setPostButtonClicked] = useState(false);
-  const [selectedTopic,setSelectedTopic] = useState("")
+  const [selectedTopic,setSelectedTopic] = useState({topic: "",
+    sort_by: "created_at",
+    order: "desc",
+    limit: 10,
+    p: 1})
   const handleSubmitForm = () => {
     setPostButtonClicked(true);
   };
