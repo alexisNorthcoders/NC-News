@@ -26,7 +26,7 @@ export default function FootBar() {
       <Col >
       <Button onClick={() => handleNavigation("home", "/")} variant="primary">Home</Button>
       </Col>
-      <Col><Button variant="success">Post Article</Button> </Col>
+      <Col><Button variant="success" onClick={() => handleNavigation("", "/article/create")}>Post Article</Button> </Col>
       <Col >
         {navigation.username ? <Button variant="warning"onClick={() => handleNavigation("users", "/users")}>Change User</Button> : <Button onClick={() => handleNavigation("users", "/users")} variant="warning">Login</Button>}
       </Col>

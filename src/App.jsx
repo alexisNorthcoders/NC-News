@@ -9,6 +9,7 @@ import { useState } from "react";
 import ErrorHandler from "./components/ErrorHandler";
 import Users from "./components/Users";
 import FootBar from "./components/FootBar";
+import PostArticle from "./components/PostArticle";
 
 function App() {
   const [postButtonClicked, setPostButtonClicked] = useState(false);
@@ -26,8 +27,9 @@ function App() {
   };
 
   return (
-    <> <FootBar/>
-     
+    <>
+      {" "}
+      <FootBar />
       <Routes>
         <Route
           path="*"
@@ -54,6 +56,15 @@ function App() {
           path="/article/:article_id/comment"
           element={
             <PostComment
+              setPostButtonClicked={setPostButtonClicked}
+              postButtonClicked={postButtonClicked}
+            />
+          }
+        />
+         <Route
+          path="/article/create"
+          element={
+            <PostArticle
               setPostButtonClicked={setPostButtonClicked}
               postButtonClicked={postButtonClicked}
             />
