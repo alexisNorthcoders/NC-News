@@ -19,7 +19,7 @@ import { NavContext } from "./NavHandler";
 import { useParams, useNavigate } from "react-router-dom";
 import PostComment from "./PostComment";
 import Comment from "./Comment";
-
+import ErrorHandler from "./ErrorHandler";
 
 export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const [article, setArticle] = useState({});
@@ -29,20 +29,18 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   const [isLoading, setIsLoading] = useState(true);
   const [thumbsCounter, setThumbsCounter] = useState(0);
   const [successComment, setSuccessComment] = useState(false);
-
+  const [errorNotFound, setErrorNotFound] = useState("");
 
   const { navigation, setNavigation } = useContext(NavContext);
   const navigate = useNavigate();
 
-  const commentRef = useRef()
+  const commentRef = useRef();
 
   function handleShowCommentsClick() {
-    setShowComment((currentShow) => !currentShow)
-    if (!showComment){
+    setShowComment((currentShow) => !currentShow);
+    if (!showComment) {
       fetchCommentsByArticleId(article.article_id).then((comments) => {
-        
         setComments(comments);
-        
       });
     }
   }
@@ -76,17 +74,16 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   }
   useEffect(() => {
     if (showComment && commentRef.current) {
-      const headerHeight = 200
+      const headerHeight = 200;
       window.scrollTo({
         top: commentRef.current.offsetTop - headerHeight,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   }, [showComment]);
   useEffect(() => {
     if (successComment) {
       fetchCommentsByArticleId(article_id).then((comments) => {
-       
         setComments(comments);
       });
     }
@@ -96,18 +93,22 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
       return { ...current, header: "article", article_id: article_id };
     });
     setIsLoading(true);
-    fetchArticleById(article_id).then((article) => {
-      setArticle(article);
-      fetchCommentsByArticleId(article.article_id).then((comments) => {
-        setComments(comments);
-        setIsLoading(false);
+    fetchArticleById(article_id)
+      .then((article) => {
+        setArticle(article);
+        fetchCommentsByArticleId(article.article_id).then((comments) => {
+          setComments(comments);
+          setIsLoading(false);
+        });
+      })
+      .catch((error) => {
+        setErrorNotFound(`${error.response.data.message}`);
       });
-    });
   }, []);
   if (navigation.header === "postcomment") {
     return (
       <PostComment
-      setShowComment={setShowComment}
+        setShowComment={setShowComment}
         setSuccessComment={setSuccessComment}
         article={article}
         setArticle={setArticle}
@@ -118,6 +119,17 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
   }
   return (
     <>
+      <ErrorHandler
+        show={errorNotFound ? true : false}
+        onHide={() => {
+          setErrorNotFound("");
+          setNavigation((current) => {
+            return { ...current, header: "home" };
+          });
+          navigate("/");
+        }}
+        errorNotFound={errorNotFound}
+      />
       <Container>
         {isLoading ? (
           <Col>
@@ -174,23 +186,26 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
                       fluid
                     />
                   </Button>
-                </span> 
+                </span>
                 <Button
                   className="fs-4"
                   variant="light"
                   onClick={handleShowCommentsClick}
                 >
-                  {showComment? "Hide":"Show"} Comments ({article.comment_count}) </Button>
+                  {showComment ? "Hide" : "Show"} Comments (
+                  {article.comment_count}){" "}
+                </Button>
                 <span>{timeDifference(article.created_at)}</span>
               </Card.Footer>
-             
             </Card.Body>
           </Card>
-        )} 
+        )}
         {showComment ? (
           <Col ref={commentRef}>
             {comments.map((comment, index) => {
-              return (<Comment key={`${comment.comment_id}`} comment={comment}/>);
+              return (
+                <Comment key={`${comment.comment_id}`} comment={comment} />
+              );
             })}
           </Col>
         ) : null}

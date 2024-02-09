@@ -42,7 +42,6 @@ export default function Comment({
       setCommentCardType("danger")
     })
     .catch(({response})=>{
-        console.log(response)
         setButtonState({ ...buttonState, clicked: false });
         setErrorMessage(`${response.data.message}`)
         setShowError(true)
