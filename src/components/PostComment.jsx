@@ -49,6 +49,12 @@ export default function PostComment({
 
         setPostButtonClicked(false)
       }
+      else if (!navigation.username){
+        setErrorMessage("Username not found. You need be logged in to post a comment.")
+        setShowError(true)
+
+        setPostButtonClicked(false)
+      }
       else{
       setIsLoading(true)
       insertCommentByArticleId(article_id, navigation.username, comment)
@@ -102,9 +108,9 @@ export default function PostComment({
           </Button>
         </Modal.Footer>
       </Modal>
-      <Card className="pt-0 mt-0 article ">
-        <Card.Body>
-          <Card.Text className="fs-6">
+      <Card className="article-comment pt-0 mt-0 article " style={{backgroundColor:"lightblue"}}>
+        <Card.Body><Card.Title className="fs-3">{article ? article.title : newArticle.title}</Card.Title>
+          <Card.Text className="fs-5 ">
             {article ? article.body : newArticle.body}
           </Card.Text>
         </Card.Body>
@@ -123,7 +129,7 @@ export default function PostComment({
         ) : (
       <Form id="postComment">
         <Form.Label className="fs-1" htmlFor="comment">
-          Add Comment
+          Write Comment
         </Form.Label>
         <Form.Control
           as="textarea"

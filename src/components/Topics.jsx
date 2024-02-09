@@ -41,7 +41,7 @@ export default function Topics({ selectedTopic, setSelectedTopic }) {
       </Button>
       {topics.map((topic, index) => (
         <Button
-          variant={selectedTopic === topic.slug ? "success" : "secondary"}
+          variant={selectedTopic.topic === topic.slug ? "success" : "secondary"}
           className="m-1 "
           key={topic.slug + index}
           onClick={() => handleTopicChange(topic.slug)}

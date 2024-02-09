@@ -3,10 +3,11 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+ 
  }
  body{
   overflow-y: scroll;
- }
+}
 .topic {
   
   text-align: left;
@@ -63,6 +64,14 @@ padding-right: 2px;
 }
 .footbar{
   background-color: rgb(255, 255, 255);
-  
- 
+  }
+.footbar button{
+  width: fit-content;
+  flex: 1;
+  min-width: 50px;
+  max-width: fit-content;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  padding:1px;
+  padding-left: 2px;
+  padding-right: 2px;
 }

@@ -22,11 +22,11 @@ export default function FootBar() {
   return (
     <Navbar className="footbar fixed-top">
       <Container >
-      <Row className="justify-content-center" style={{justifyContent:"center",width:"100%"}}>
+      <Row className="justify-content-center " style={{justifyContent:"center",width:"100%"}}>
       <Col >
       <Button onClick={() => handleNavigation("home", "/")} variant="primary">Home</Button>
       </Col>
-      <Col><Button variant="success">Create Article</Button> </Col>
+      <Col><Button variant="success">Post Article</Button> </Col>
       <Col >
         {navigation.username ? <Button variant="warning"onClick={() => handleNavigation("users", "/users")}>Change User</Button> : <Button onClick={() => handleNavigation("users", "/users")} variant="warning">Login</Button>}
       </Col>

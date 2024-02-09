@@ -69,14 +69,16 @@ export default function NavBarButtons({
     );
   } else if (header === "postcomment") {
     navBarButtons = (
-      <>
-        {createButton(handleButtonClick, "success", "Post")}
-        {createButton(
-          () => handleNavigation("article", `/article/${article_id}`),
-          "danger",
-          "Cancel"
-        )}
-      </>
+      <Row className="justify-content-end">
+    <Col xs="auto" style={{marginLeft:"5px",width:"fit-content",maxWidth:"fit-content"}}> <Button className="fs-1"onClick={() => handleNavigation("article", `/article/${article_id}`)} variant="danger">
+      Cancel
+    </Button></Col> 
+      <Col xs="auto" style={{marginRight:"30px", marginBottom:"50px",width:"fit-content",maxWidth:"fit-content"}}><Button className="fs-1" onClick={handleButtonClick} variant="success" style={{paddingRight:"20px",paddingLeft:"20px"}}>
+          Post  
+        </Button></Col> 
+        </Row>
+       
+     
     );
   }
   return (
@@ -85,7 +87,7 @@ export default function NavBarButtons({
       style={{ marginLeft: "5%" }}
     >
    
-      <Row className="navbar-buttons-row d-flex flex-row">{navBarButtons}</Row>
+      <Row className="navbar-buttons-row d-flex flex-row ">{navBarButtons}</Row>
     </Col>
   );
 }
