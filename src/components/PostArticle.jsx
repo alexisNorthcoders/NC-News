@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import {
   fetchArticleById,
+  fetchTopics,
   insertArticle,
   insertCommentByArticleId,
 } from "../utils/api";
@@ -26,6 +27,7 @@ export default function PostArticle() {
   const [isLoading, setIsLoading] = useState(false);
   const [submitArticle, setSubmitArticle] = useState({});
   const navigate = useNavigate();
+  const [topics, setTopics] = useState([]);
 
   function handleClose() {
     if (show) {
@@ -41,7 +43,7 @@ export default function PostArticle() {
   }
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(submitArticle)
+    
     if (!navigation.username){
         setErrorMessage("You need to be logged in.")
         setShowError(true)
@@ -56,7 +58,10 @@ export default function PostArticle() {
   }
   useEffect(() => {
     setNavigation((current) => ({ ...current, header: "" }));
-  }, []);
+    fetchTopics().then((response) => {
+        setTopics(response)
+        console.log(topics);})
+}, []);
 
   useEffect(() => {}, []);
 
@@ -113,6 +118,11 @@ export default function PostArticle() {
                     setSubmitArticle((current) => ({ ...current, title: event.target.value }))}}
                 />
                 <Form.Label htmlFor="topic">Topic</Form.Label>
+                <Form.Select aria-label="Default select example">
+      <option>Select your Topic</option>
+      {topics.map((topic,index) => (<option key={topic+index} value={topic.slug}>{topic.slug}</option>))}
+      
+    </Form.Select>
                 <Form.Control
                   as="textarea"
                   rows={1}
