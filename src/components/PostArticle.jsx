@@ -43,6 +43,7 @@ export default function PostArticle() {
   }
   function handleSubmit(event) {
     event.preventDefault();
+    console.log(submitArticle)
     
     if (!navigation.username){
         setErrorMessage("You need to be logged in.")
@@ -60,7 +61,7 @@ export default function PostArticle() {
     setNavigation((current) => ({ ...current, header: "" }));
     fetchTopics().then((response) => {
         setTopics(response)
-        console.log(topics);})
+        ;})
 }, []);
 
   useEffect(() => {}, []);
@@ -118,21 +119,13 @@ export default function PostArticle() {
                     setSubmitArticle((current) => ({ ...current, title: event.target.value }))}}
                 />
                 <Form.Label htmlFor="topic">Topic</Form.Label>
-                <Form.Select aria-label="Default select example">
+                <Form.Select id="topic" aria-describedby="article topic" aria-label="Default select example" onChange={(event) => {
+                    setSubmitArticle((current) => ({ ...current, topic: event.target.value }))}}>
       <option>Select your Topic</option>
       {topics.map((topic,index) => (<option key={topic+index} value={topic.slug}>{topic.slug}</option>))}
       
     </Form.Select>
-                <Form.Control
-                  as="textarea"
-                  rows={1}
-                  placeholder="Topic"
-                  id="topic"
-                  aria-describedby="article topic"
-                  onChange={(event) => {
-                    setSubmitArticle((current) => ({ ...current, topic: event.target.value }))}}
-                  
-                />
+                
                 <Form.Label htmlFor="body">Content</Form.Label>
                 <Form.Control
                   as="textarea"
