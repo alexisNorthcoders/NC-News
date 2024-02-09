@@ -50,12 +50,12 @@ export const fetchUsers = () => {
 };
 export const insertArticle = (article) => {
 
-  return ncNews.post(`/articles/${article}`, {
+  return ncNews.post(`/articles/`, {
     author: article.author,
     title: article.title,
     body: article.body,
     topic: article.topic,
-    article_img_url: article.url,
+    article_img_url: article.article_img_url,
   })
     .then(({ data: { article } }) => article);
 
