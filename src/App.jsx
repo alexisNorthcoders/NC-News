@@ -19,8 +19,7 @@ function App() {
   });
   const [showError, setShowError] = useState(true);
   const {pathname} = useLocation()
-console.log(pathname)
-  const handleSubmitForm = () => {
+const handleSubmitForm = () => {
     setPostButtonClicked(true);
   };
 
