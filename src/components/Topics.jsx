@@ -6,6 +6,7 @@ import ErrorHandler from "./ErrorHandler";
 
 export default function Topics({selectedTopic,setSelectedTopic}) {
   const [searchParams] = useSearchParams()
+ 
     const [topics,setTopics]=useState([])
     const navigate = useNavigate();
     const [showError,setShowError] = useState(false)

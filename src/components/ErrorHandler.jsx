@@ -1,10 +1,10 @@
 import { Button, Modal } from "react-bootstrap";
 
-export default function ErrorHandler(props){
+export default function ErrorHandler({ errorNotFound,pathname,topicParam,...rest}){
    
         return (
           <Modal
-            {...props}
+            {...rest}
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             className="text-align-center"
@@ -12,17 +12,18 @@ export default function ErrorHandler(props){
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
-                Error
+                Error Not Found
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <h4>Topic Not Found</h4>
-              <p>
-                You tried to access topic {props.topicParam} but it doesn't exist.
-              </p>
+              <h4>{topicParam ? "Topic" : null} {pathname ? `Path ${pathname} Not Found!` : null}
+              {errorNotFound ? `${errorNotFound}` : null}</h4>
+              {topicParam ? <p>You tried to access topic {topicParam} but it doesn't exist.</p> : null}
+                
+             
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="danger"onClick={props.onHide}>Close</Button>
+              <Button variant="danger"onClick={rest.onHide}>Close</Button>
             </Modal.Footer>
           </Modal>
         );
