@@ -158,7 +158,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
                     disabled={thumbsCounter === 1}
                   >
                     <Image
-                      src="../../src/assets/hand-thumbs-up.svg"
+                      src="/hand-thumbs-up.svg"
                       alt="thumbs up icon"
                       fluid
                     />
@@ -181,7 +181,7 @@ export default function Article({ setPostButtonClicked, postButtonClicked }) {
                     disabled={thumbsCounter === -1}
                   >
                     <Image
-                      src="../../src/assets/hand-thumbs-down.svg"
+                      src="/hand-thumbs-down.svg"
                       alt="thumbs down icon"
                       fluid
                     />
