@@ -12,7 +12,8 @@ export default function Topics({ selectedTopic, setSelectedTopic }) {
   const [showError, setShowError] = useState(false);
   const topicParam = searchParams.get("topic");
   function handleTopicChange(topic) {
-    setSelectedTopic(topic);
+    
+    setSelectedTopic((current) => ({ ...current, topic: topic }))
     if (topic) {
       navigate(`/?topic=${topic}`);
     } else {
@@ -20,6 +21,7 @@ export default function Topics({ selectedTopic, setSelectedTopic }) {
     }
   }
   useEffect(() => {
+    
     fetchTopics().then((topics) => {
       setTopics(topics);
       if (topicParam && !topics.some((topic) => topic.slug === topicParam)) {

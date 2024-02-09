@@ -64,7 +64,7 @@ export default function NavBarButtons({
           "success",
           "Add Comment"
         )}
-        {createButton(() => handleNavigation("home", "/"), "primary", "Home")}
+     
       </>
     );
   } else if (header === "postcomment") {

@@ -3,7 +3,6 @@ import axios from "axios";
 const ncNews = axios.create({
   baseURL: "https://nc-news-2sb7.onrender.com/api/",
 });
-
 export const fetchArticles = ({topic,sort_by,order,limit,p}) => {
  
   const params = {
@@ -13,7 +12,7 @@ export const fetchArticles = ({topic,sort_by,order,limit,p}) => {
     limit: limit,
     p: p
   };
-  console.log(params)
+  
 
   return ncNews.get('/articles', { params });
 };
@@ -38,11 +37,12 @@ export const insertCommentByArticleId = (article_id,username,comment) =>{
     .then(({data:{comment}}) => comment)
     
 }
-
 export const deleteCommentById = (comment_id) =>{
   return ncNews.delete(`/comments/${comment_id}`)
 }
-
 export const fetchTopics = () =>{
   return ncNews.get(`/topics`).then(({data:{topics}}) => topics);
+}
+export const fetchUsers = () =>{
+  return ncNews.get(`/users`).then(({data:{users}}) => users);
 }

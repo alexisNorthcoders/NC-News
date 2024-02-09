@@ -29,7 +29,7 @@ export default function PostComment({
       });
       navigate(`/article/${navigation.article_id}`)
       setShowComment(true)
-      console.log("showcomment to true")
+      
     }
     else if (showError){
       setShowError(false)

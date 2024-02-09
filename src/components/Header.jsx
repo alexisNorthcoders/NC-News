@@ -24,7 +24,7 @@ export default function Header({
   };
 
   return (
-    <Navbar className={`navbar bg-tertiary justify-content-between fixed-top`}>
+    <Navbar className={`navbar bg-tertiary justify-content-between fixed-bottom`}>
       <Container className="navbar-container">
         <Row className="navbar-row justify-content-md-center">
          
@@ -37,7 +37,7 @@ export default function Header({
             article_id={navigation.article_id}
             handleButtonClick={handleButtonClick}
           />
-          <UserAvatar username={navigation.username} />
+          
         </Row>
       </Container>
     </Navbar>

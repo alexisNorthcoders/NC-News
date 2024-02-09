@@ -2,11 +2,13 @@ import Articles from "./components/Articles";
 import "./App.css";
 import Header from "./components/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Routes, Route,useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Article from "./components/Article";
 import PostComment from "./components/PostComment";
 import { useState } from "react";
 import ErrorHandler from "./components/ErrorHandler";
+import Users from "./components/Users";
+import FootBar from "./components/FootBar";
 
 function App() {
   const [postButtonClicked, setPostButtonClicked] = useState(false);
@@ -18,23 +20,27 @@ function App() {
     p: 1,
   });
   const [showError, setShowError] = useState(true);
-  const {pathname} = useLocation()
-const handleSubmitForm = () => {
+  const { pathname } = useLocation();
+  const handleSubmitForm = () => {
     setPostButtonClicked(true);
   };
 
   return (
-    <>
-      <Header
-        onSubmitForm={handleSubmitForm}
-        setSelectedTopic={setSelectedTopic}
-        selectedTopic={selectedTopic}
-      />
+    <> <FootBar/>
+     
       <Routes>
-        <Route path="*" element={<ErrorHandler pathname={pathname} show={showError}
-    onHide={() => setShowError(false)}
-  />} />
+        <Route
+          path="*"
+          element={
+            <ErrorHandler
+              pathname={pathname}
+              show={showError}
+              onHide={() => setShowError(false)}
+            />
+          }
+        />
         <Route path="/" element={<Articles selectedTopic={selectedTopic} />} />
+        <Route path="/users" element={<Users />} />
         <Route
           path="/article/:article_id/"
           element={
@@ -54,6 +60,11 @@ const handleSubmitForm = () => {
           }
         />
       </Routes>
+      <Header
+        onSubmitForm={handleSubmitForm}
+        setSelectedTopic={setSelectedTopic}
+        selectedTopic={selectedTopic}
+      />
     </>
   );
 }
