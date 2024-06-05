@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const ncNews = axios.create({
-  baseURL: "http://alexisraspberry.changeip.co:81/api/",
+  baseURL: "https://alexisraspberry.duckdns.org/api",
 });
 export const fetchArticles = ({ topic, sort_by, order, limit, p }) => {
 
